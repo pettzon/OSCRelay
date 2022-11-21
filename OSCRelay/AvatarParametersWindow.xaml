@@ -1,0 +1,18 @@
+﻿<Window x:Class="OSCRelay.AvatarParametersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:OSCRelay"
+        mc:Ignorable="d"
+        Title="AvatarParameters" Height="450" Width="800">
+    <Grid>
+        <DataGrid Name="AvatarParameterList" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Header="Enabled" Binding="{Binding enabled, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Parameter" Binding="{Binding name}"/>
+                <DataGridTextColumn Header="Type" Binding="{Binding type}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

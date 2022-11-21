@@ -1,0 +1,12 @@
+C:\Users\Petti\RiderProjects\OSCRelay\Global.Data\bin\Debug\net7.0\Global.Data.deps.json
+C:\Users\Petti\RiderProjects\OSCRelay\Global.Data\bin\Debug\net7.0\Global.Data.dll
+C:\Users\Petti\RiderProjects\OSCRelay\Global.Data\bin\Debug\net7.0\Global.Data.pdb
+C:\Users\Petti\RiderProjects\OSCRelay\Global.Data\obj\Debug\net7.0\Global.Data.csproj.AssemblyReference.cache
+C:\Users\Petti\RiderProjects\OSCRelay\Global.Data\obj\Debug\net7.0\Global.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Petti\RiderProjects\OSCRelay\Global.Data\obj\Debug\net7.0\Global.Data.AssemblyInfoInputs.cache
+C:\Users\Petti\RiderProjects\OSCRelay\Global.Data\obj\Debug\net7.0\Global.Data.AssemblyInfo.cs
+C:\Users\Petti\RiderProjects\OSCRelay\Global.Data\obj\Debug\net7.0\Global.Data.csproj.CoreCompileInputs.cache
+C:\Users\Petti\RiderProjects\OSCRelay\Global.Data\obj\Debug\net7.0\Global.Data.dll
+C:\Users\Petti\RiderProjects\OSCRelay\Global.Data\obj\Debug\net7.0\refint\Global.Data.dll
+C:\Users\Petti\RiderProjects\OSCRelay\Global.Data\obj\Debug\net7.0\Global.Data.pdb
+C:\Users\Petti\RiderProjects\OSCRelay\Global.Data\obj\Debug\net7.0\ref\Global.Data.dll
