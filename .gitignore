@@ -1,3 +1,6 @@
 ﻿.idea
 OSCRelay/obj/Debug
 Global.Data/bin
+OSCRelay/bin
+OSCRelay/obj
+Global.Data/obj

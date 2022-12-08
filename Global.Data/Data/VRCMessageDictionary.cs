@@ -4,14 +4,13 @@ public class VRCMessageDictionary
 {
     public static readonly Dictionary<string, VRCMessageType> StringTypeDictionary = new Dictionary<string, VRCMessageType>()
     {
-        {"/avatar/change", VRCMessageType.AVATAR_CHANGE},
-        {"/avatar/parameters/MuteSelf", VRCMessageType.MUTE_SELF},
-        {"/avatar/parameters", VRCMessageType.ENABLED_PARAMETER}
-    };
-
-    public static readonly Dictionary<VRCMessageType, string> TypeValueDictionary = new Dictionary<VRCMessageType, string>()
-    {
-        {VRCMessageType.AVATAR_CHANGE, "string"},
-        {VRCMessageType.MUTE_SELF, "bool"}
+        {"parameters", VRCMessageType.AVATAR_PARAMETER},
+        {"change", VRCMessageType.AVATAR_CHANGE},
+        {"VelocityX", VRCMessageType.MUTE_SELF},
+        {"VelocityY", VRCMessageType.MUTE_SELF},
+        {"VelocityZ", VRCMessageType.MUTE_SELF},
+        {"AngularY", VRCMessageType.MUTE_SELF},
+        {"TrackingType", VRCMessageType.MUTE_SELF},
+        {"MuteSelf", VRCMessageType.MUTE_SELF}
     };
 }

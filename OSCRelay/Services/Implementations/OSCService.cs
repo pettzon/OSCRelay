@@ -28,7 +28,7 @@ public class OSCService : IOSCService
     
     public bool isConnectedOSC { get; private set; }
 
-    public static event Action<VRCMessage>? OnMessageReceived;
+    public static event Action<string[], string>? OnMessageReceived;
 
     public OSCService(IRelayService relayService, ICustomLoggerService customLoggerService, IServiceProvider serviceProvider)
     {
@@ -112,12 +112,17 @@ public class OSCService : IOSCService
 
     private void ParseMessage(string? message)
     {
-        string[] messageValue = message.Split(',');
+        string[] messageValueSplit = message.Split(',');
+        string value = messageValueSplit.Length > 1 ? messageValueSplit[1].Replace('"', ' ').Trim() : string.Empty;
+        
+        string[] messageSplit = messageValueSplit[0][1..].Replace('"', ' ').Trim().Split('/');
+        OnMessageReceived?.Invoke(messageSplit, value);
 
-        if (VRCMessageDictionary.StringTypeDictionary.TryGetValue(messageValue[0].Trim(), out VRCMessageType value))
-        {
-            VRCMessage vrcMessage = new VRCMessage(value, messageValue[1].Replace('"', ' ').Trim());
-            OnMessageReceived?.Invoke(vrcMessage);
-        }
+        // if (VRCMessageDictionary.StringTypeDictionary.TryGetValue(messageValue[0].Trim(), out VRCMessageType value))
+        // {
+        //     Debug.WriteLine(message);
+        //     VRCMessage vrcMessage = new VRCMessage(value, messageValue[1].Replace('"', ' ').Trim());
+        //     OnMessageReceived?.Invoke(vrcMessage);
+        // }
     }
 }

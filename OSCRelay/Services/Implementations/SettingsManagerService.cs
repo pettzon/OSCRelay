@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -131,12 +132,40 @@ public class SettingsManagerService : ISettingsManagerService
         customLoggerService.LogMessage($"SAVING {type}");
     }
 
-    private async void OnAvatarParametersLoaded(VRCData vrcData)
+    private async void OnAvatarParametersLoaded(VRCData vrcData, List<VRCMessage> vrcMessages)
     {
         userSettings.LastActiveAvatarID = vrcData.id;
         ExposedParameters parameters = await LoadExposedAvatarParametersAsync(vrcData.id);
         await SaveJson(userSettings, settingsPath!, settingsFileName!);
+
+        if (parameters.avatarParameters.Count > 0)
+        {
+            await SetEnabledParameters(parameters, vrcMessages);
+        }
         
         OnExposedParametersChanged?.Invoke(parameters);
+    }
+
+    private async Task SetEnabledParameters(ExposedParameters parameters, List<VRCMessage> vrcMessages)
+    {
+        await Task.Run(() =>
+        {
+            foreach (AvatarParameter parameter in parameters.avatarParameters)
+            {
+                foreach (VRCMessage message in vrcMessages)
+                {
+                    if (message.parameter != parameter.name)
+                        continue;
+                    
+                    if (float.TryParse(message.value, out float value))
+                    {
+                        parameter.value = value;
+                        continue;
+                    }
+
+                    parameter.value = message.value.ToLower() == "true" ? 1f : 0f;
+                }
+            }
+        });
     }
 }

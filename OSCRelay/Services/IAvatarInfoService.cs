@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Global.Data.Data;
 using Global.Data.Data.VRChat;
 
@@ -9,4 +10,5 @@ public interface IAvatarInfoService
     private async Task FetchLocalOSCDataAsync(VRCMessage vrcMessage) {}
     public void FetchLocalOSCData(VRCMessage vrcMessage);
     public VRCData? GetCurrentAvatarParameters();
+    public void SwapAvatar(VRCMessage vrcMessage, List<VRCMessage> enabledParameters);
 }

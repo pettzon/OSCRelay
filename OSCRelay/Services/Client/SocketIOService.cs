@@ -106,7 +106,7 @@ public class SocketIOService : IServiceProvider
     private async Task UpdateExposedAvatarParametersAsync(ExposedParameters parameters)
     {
         AllAvatarParametersDTO AllParamsDTO = ConvertAllParamsToDTO(parameters);
-        
+
         await client.EmitAsync("token", APItoken);
         await client.EmitAsync("params", AllParamsDTO);
     }
@@ -117,7 +117,8 @@ public class SocketIOService : IServiceProvider
         
         foreach(AvatarParameter parameter in parameters.avatarParameters)
         {
-            DTO.Add(new AvatarParameterDTO(0f, parameter.name, parameter.type));
+            DTO.Add(new AvatarParameterDTO(parameter.value, parameter.name, parameter.type));
+            Debug.WriteLine($"Sending parameter {parameter.name} with value {parameter.value}");
         }
 
         return new AllAvatarParametersDTO(parameters.avatarID, DTO);
