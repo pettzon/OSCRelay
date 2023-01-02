@@ -17,7 +17,8 @@ public class SocketIOService : IServiceProvider
     private SocketIO client;
     private readonly ICustomLoggerService customLogger;
     private Token APItoken;
-
+    private string hostURI;
+    
     private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
     private readonly CancellationToken cancellationToken;
     
@@ -37,14 +38,15 @@ public class SocketIOService : IServiceProvider
         // });
     }
 
-    public void StartProviderService(Token token)
+    public void StartProviderService(Token token, string host)
     {
-        StartProviderServiceAsync(cancellationToken, token);
+        hostURI = host;
+        StartProviderServiceAsync(cancellationToken, token, host);
     }
 
-    private async Task StartProviderServiceAsync(CancellationToken cancellationToken, Token token)
+    private async Task StartProviderServiceAsync(CancellationToken cancellationToken, Token token, string host)
     {
-        client = new SocketIO("ws://api-vrcosc.huks.dev/", new SocketIOOptions()
+        client = new SocketIO(host, new SocketIOOptions()
         {
             EIO = EngineIO.V4,
             Transport = TransportProtocol.WebSocket,
@@ -56,12 +58,11 @@ public class SocketIOService : IServiceProvider
 
         if (string.IsNullOrEmpty(token.token))
         {
-            customLogger.LogMessage("Fetching token");
+            customLogger.LogMessage("Fetching API token...");
             APItoken = await FetchAccessToken();
+            customLogger.LogMessage($"Token fetched! {APItoken.token}");
         }
 
-        customLogger.LogMessage($"Token fetched {APItoken}");
-        
         if (string.IsNullOrEmpty(APItoken.token))
         {
             customLogger.LogMessage($"Could not connect to remote server!");
@@ -94,7 +95,7 @@ public class SocketIOService : IServiceProvider
     {
         using (HttpClient client = new HttpClient())
         {
-            HttpResponseMessage message = await client.GetAsync("https://api-vrcosc.huks.dev/my-token/");
+            HttpResponseMessage message = await client.GetAsync(new Uri($"{hostURI}/my-token/"));
             message.EnsureSuccessStatusCode();
 
             string json = await message.Content.ReadAsStringAsync();

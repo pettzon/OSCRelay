@@ -52,8 +52,7 @@ public class OSCService : IOSCService
         OSCReceiver.Connect();
         thread.Start();
         
-        customLoggerService.LogMessage($"Token is {token.token}");
-        serviceProvider.StartProviderService(token);
+        serviceProvider.StartProviderService(token, "ws://api-vrcosc.huks.dev");
 
         isConnectedOSC = true;
     }
