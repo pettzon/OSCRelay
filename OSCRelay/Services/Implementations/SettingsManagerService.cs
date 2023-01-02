@@ -39,25 +39,25 @@ public class SettingsManagerService : ISettingsManagerService
 
     private async Task LoadSettings()
     {
-        await LoadSettingsAsync();
-        await LoadExposedAvatarParametersAsync(userSettings.LastActiveAvatarID);
+        userSettings = await LoadSettingsAsync();
+        OnSettingsLoaded?.Invoke(userSettings!);
+        
+        exposedAvatarParameters = await LoadExposedAvatarParametersAsync(userSettings.LastActiveAvatarID);
     }
     
-    private async Task LoadSettingsAsync()
+    private async Task<UserSettings> LoadSettingsAsync()
     {
         string fullPath = Path.Combine(settingsPath!, settingsFileName!);
         
         if (File.Exists(fullPath))
         {
             string json = await File.ReadAllTextAsync(fullPath);
-            userSettings = JsonSerializer.Deserialize<UserSettings>(json)!;
+            return JsonSerializer.Deserialize<UserSettings>(json)!;
         }
         else
         {
-            await GenerateDefaultSettingsAsync();
+            return await GenerateDefaultSettingsAsync();
         }
-        
-        OnSettingsLoaded?.Invoke(userSettings!);
     }
 
     private void LoadExposedAvatarParameters(string id)
@@ -72,8 +72,7 @@ public class SettingsManagerService : ISettingsManagerService
         if (File.Exists(fullPath))
         {
             string json = await File.ReadAllTextAsync(fullPath);
-            exposedAvatarParameters = JsonSerializer.Deserialize<ExposedParameters>(json);
-            return exposedAvatarParameters;
+            return JsonSerializer.Deserialize<ExposedParameters>(json);
         }
 
         return new ExposedParameters(id, "", new List<AvatarParameter>());
@@ -85,7 +84,7 @@ public class SettingsManagerService : ISettingsManagerService
         Directory.CreateDirectory(avatarParameterStorage!);
     }
     
-    private async Task GenerateDefaultSettingsAsync()
+    private async Task<UserSettings> GenerateDefaultSettingsAsync()
     {
         string fullPath = Path.Combine(settingsPath!, settingsFileName!);
 
@@ -98,6 +97,8 @@ public class SettingsManagerService : ISettingsManagerService
 
         string json = JsonSerializer.Serialize(settings);
         await File.WriteAllTextAsync(fullPath, json);
+
+        return settings;
     }
 
     public UserSettings GetUserSettings()
@@ -139,15 +140,15 @@ public class SettingsManagerService : ISettingsManagerService
     private async void OnAvatarParametersLoaded(VRCData vrcData, List<VRCMessage> vrcMessages)
     {
         userSettings.LastActiveAvatarID = vrcData.id;
-        ExposedParameters parameters = await LoadExposedAvatarParametersAsync(vrcData.id);
+        exposedAvatarParameters = await LoadExposedAvatarParametersAsync(vrcData.id);
         await SaveJson(userSettings, settingsPath!, settingsFileName!);
 
-        if (parameters.avatarParameters.Count > 0)
+        if (exposedAvatarParameters.avatarParameters.Count > 0)
         {
-            await SetEnabledParameters(parameters, vrcMessages);
+            await SetEnabledParameters(exposedAvatarParameters, vrcMessages);
         }
         
-        OnExposedParametersChanged?.Invoke(parameters);
+        OnExposedParametersChanged?.Invoke(exposedAvatarParameters);
     }
 
     private async Task SetEnabledParameters(ExposedParameters parameters, List<VRCMessage> vrcMessages)

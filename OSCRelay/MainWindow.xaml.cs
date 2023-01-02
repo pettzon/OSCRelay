@@ -91,6 +91,7 @@ namespace OSCRelay
         private void InitializeTextBox(UserSettings userSettings)
         {
             UserId.Text = userSettings.AccountID;
+            Token.Text = userSettings.Token.token;
             XToysToken.Text = userSettings.XToysToken;
             ListenPort.Text = userSettings.PortReceive.ToString();
             SendPort.Text = userSettings.PortSend.ToString();
@@ -102,16 +103,15 @@ namespace OSCRelay
         {
             int.TryParse(ListenPort.Text, out int listenPort);
             int.TryParse(SendPort.Text, out int sendPort);
-            
-            UserSettings userSettings = new UserSettings()
-            {
-                AccountID = UserId.Text,
-                Token = new Token(Token.Text),
-                XToysToken = XToysToken.Text,
-                PortReceive = listenPort,
-                PortSend = sendPort
-            };
-            
+
+            UserSettings userSettings = settingsManagerService.GetUserSettings() ?? new UserSettings();
+
+            userSettings.AccountID = UserId.Text;
+            userSettings.Token = new Token(Token.Text);
+            userSettings.XToysToken = XToysToken.Text;
+            userSettings.PortReceive = listenPort;
+            userSettings.PortSend = sendPort;
+
             settingsManagerService.SetUserSettings(userSettings);
             await settingsManagerService.SaveUserSettings();
         }

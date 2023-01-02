@@ -34,9 +34,15 @@ public partial class AvatarParametersWindow : Window
     private ObservableCollection<AvatarParameter> GenerateParameterList()
     {
         ObservableCollection<AvatarParameter> avatarParameters = new ObservableCollection<AvatarParameter>();
-        VRCData vrcData = avatarInfoService.GetCurrentAvatarParameters()!;
-
-        foreach (Parameter parameter in vrcData.parameters!)
+        VRCData? vrcData = avatarInfoService.GetCurrentAvatarParameters();
+        
+        if (vrcData is null)
+            return new ObservableCollection<AvatarParameter>();
+        
+        
+        Debug.WriteLine($"CURRENT AVATAR NAME {vrcData.name} {vrcData.id}");
+        
+        foreach (Parameter parameter in vrcData.parameters)
         {
             if (parameter.input != null)
             {
@@ -61,6 +67,7 @@ public partial class AvatarParametersWindow : Window
         }
 
         ExposedParameters exposedAvatarParameters = settingsManagerService.GetExposedAvatarParameters();
+        Debug.WriteLine($"CURRENT EXPOSED AVATAR NAME {exposedAvatarParameters.avatarName}");
 
         if (exposedAvatarParameters != null)
         {
@@ -82,6 +89,11 @@ public partial class AvatarParametersWindow : Window
 
     private void AvatarParameterWindow_Closing(object sender, CancelEventArgs e)
     {
+        VRCData vrcData = avatarInfoService.GetCurrentAvatarParameters();
+        
+        if (vrcData is null)
+            return;
+        
         List<AvatarParameter> parameterList = new List<AvatarParameter>();
         
         foreach(AvatarParameter parameter in avatarParameterViewList)
@@ -91,8 +103,8 @@ public partial class AvatarParametersWindow : Window
             parameter.enabled = false;
             parameterList.Add(parameter);
         }
-
-        ExposedParameters exposedParameters = new ExposedParameters(avatarInfoService.GetCurrentAvatarParameters()!.id!, avatarInfoService.GetCurrentAvatarParameters().name!, parameterList);
+        
+        ExposedParameters exposedParameters = new ExposedParameters(avatarInfoService.GetCurrentAvatarParameters().id, avatarInfoService.GetCurrentAvatarParameters().name, parameterList);
         settingsManagerService.SetUserEnabledParameters(exposedParameters);
     }
 }
