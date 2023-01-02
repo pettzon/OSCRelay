@@ -37,12 +37,12 @@ public class SocketIOService : IServiceProvider
         // });
     }
 
-    public void StartProviderService()
+    public void StartProviderService(Token token)
     {
-        StartProviderServiceAsync(cancellationToken);
+        StartProviderServiceAsync(cancellationToken, token);
     }
 
-    private async Task StartProviderServiceAsync(CancellationToken cancellationToken)
+    private async Task StartProviderServiceAsync(CancellationToken cancellationToken, Token token)
     {
         client = new SocketIO("ws://api-vrcosc.huks.dev/", new SocketIOOptions()
         {
@@ -53,9 +53,15 @@ public class SocketIOService : IServiceProvider
         });
 
         RegisterClientEvents();
-        
-        APItoken = await FetchAccessToken();
 
+        if (string.IsNullOrEmpty(token.token))
+        {
+            customLogger.LogMessage("Fetching token");
+            APItoken = await FetchAccessToken();
+        }
+
+        customLogger.LogMessage($"Token fetched {APItoken}");
+        
         if (string.IsNullOrEmpty(APItoken.token))
         {
             customLogger.LogMessage($"Could not connect to remote server!");
@@ -98,7 +104,7 @@ public class SocketIOService : IServiceProvider
         }
     }
 
-    private void UpdateExposedAvatarParameters(ExposedParameters parameters)
+    public void UpdateExposedAvatarParameters(ExposedParameters parameters)
     {
         UpdateExposedAvatarParametersAsync(parameters);
     }

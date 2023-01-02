@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -45,8 +46,11 @@ namespace OSCRelay
 
         private void OnConnected(Token token)
         {
+            serviceProvider.UpdateExposedAvatarParameters(settingsManagerService.GetExposedAvatarParameters());
+            
             Dispatcher.Invoke(() =>
             {
+                Token.Text = token.token;
                 LinkText.Inlines.Clear();
                 LinkText.NavigateUri = new Uri($"https://vrcosc.huks.dev?token={token.token}");
                 LinkText.Inlines.Add($"https://vrcosc.huks.dev?token={token.token}");
@@ -65,7 +69,7 @@ namespace OSCRelay
 
         private void ConnectToOSCButton(object sender, RoutedEventArgs e)
         {
-            oscService.ConnectToOSC(settingsManagerService.GetUserSettings().PortReceive, settingsManagerService.GetUserSettings().PortSend);
+            oscService.ConnectToOSC(settingsManagerService.GetUserSettings().PortReceive, settingsManagerService.GetUserSettings().PortSend, settingsManagerService.GetUserSettings().Token ?? new Token(""));
         }
 
         private void WebLinkButton(object sender, RoutedEventArgs e)
@@ -94,7 +98,7 @@ namespace OSCRelay
             SettingsManagerService.OnSettingsLoaded -= InitializeTextBox;
         }
 
-        private void SaveSettingsButton(object sender, RoutedEventArgs e)
+        public async Task SaveSettings()
         {
             int.TryParse(ListenPort.Text, out int listenPort);
             int.TryParse(SendPort.Text, out int sendPort);
@@ -102,12 +106,14 @@ namespace OSCRelay
             UserSettings userSettings = new UserSettings()
             {
                 AccountID = UserId.Text,
+                Token = new Token(Token.Text),
                 XToysToken = XToysToken.Text,
                 PortReceive = listenPort,
                 PortSend = sendPort
             };
             
             settingsManagerService.SetUserSettings(userSettings);
+            await settingsManagerService.SaveUserSettings();
         }
     }
 

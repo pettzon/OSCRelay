@@ -76,7 +76,7 @@ public class SettingsManagerService : ISettingsManagerService
             return exposedAvatarParameters;
         }
 
-        return new ExposedParameters(id, new List<AvatarParameter>());
+        return new ExposedParameters(id, "", new List<AvatarParameter>());
     }
 
     private void GenerateDirectories()
@@ -113,7 +113,11 @@ public class SettingsManagerService : ISettingsManagerService
     public void SetUserSettings(UserSettings settings)
     {
         userSettings = settings;
-        SaveJson(settings, settingsPath!, settingsFileName!);
+    }
+
+    public async Task SaveUserSettings()
+    {
+        await SaveJson(userSettings, settingsPath!, settingsFileName!);
     }
 
     public void SetUserEnabledParameters(ExposedParameters exposedParameters)

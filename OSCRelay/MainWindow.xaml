@@ -28,15 +28,17 @@
         <Button Grid.Row="1" Grid.Column="0" Click="AvatarParametersButton" FontSize="22">Avatar Parameters</Button>
         
         <TextBlock Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" FontSize="22" Margin="20, 0"> VRChat User ID </TextBlock>
-        <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" FontSize="22" Margin="20, 0"> XToys Token </TextBlock>
-        <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" FontSize="22" Margin="20, 0"> Listen Port </TextBlock>
-        <TextBlock Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" FontSize="22" Margin="20, 0"> Send Port </TextBlock>
-        <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" FontSize="22"> <Hyperlink Name="LinkText" NavigateUri="" Click="WebLinkButton"></Hyperlink></TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" FontSize="22" Margin="20, 0"> Web Token </TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" FontSize="22" Margin="20, 0"> XToys Token </TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" FontSize="22" Margin="20, 0"> Listen Port </TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" FontSize="22" Margin="20, 0"> Send Port </TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" FontSize="22"> <Hyperlink Name="LinkText" NavigateUri="" Click="WebLinkButton"></Hyperlink></TextBlock>
         
         <TextBox Grid.Row="0" Grid.Column="2" Name="UserId" FontSize="22">  </TextBox>
-        <TextBox Grid.Row="1" Grid.Column="2" Name="XToysToken" FontSize="22">  </TextBox>
-        <TextBox Grid.Row="2" Grid.Column="2" Name="ListenPort" FontSize="22">  </TextBox>
-        <TextBox Grid.Row="3" Grid.Column="2" Name="SendPort" FontSize="22">  </TextBox>
+        <TextBlock Grid.Row="1" Grid.Column="2" Name="Token" FontSize="22">  </TextBlock>
+        <TextBox Grid.Row="2" Grid.Column="2" Name="XToysToken" FontSize="22">  </TextBox>
+        <TextBox Grid.Row="3" Grid.Column="2" Name="ListenPort" FontSize="22">  </TextBox>
+        <TextBox Grid.Row="4" Grid.Column="2" Name="SendPort" FontSize="22">  </TextBox>
         
         <ScrollViewer Grid.Row="5" Grid.RowSpan="4" Grid.ColumnSpan="3" Name="Scroller" Margin="0" Background="Black">
             <StackPanel>

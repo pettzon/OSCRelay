@@ -39,7 +39,7 @@ public class OSCService : IOSCService
         serviceProvider.OnReceiveParameter += SendAvatarParameters;
     }
     
-    public void ConnectToOSC(int receiverPort, int senderPort)
+    public void ConnectToOSC(int receiverPort, int senderPort, Token token)
     {
         this.receiverPort = receiverPort;
         this.senderPort = senderPort;
@@ -52,7 +52,8 @@ public class OSCService : IOSCService
         OSCReceiver.Connect();
         thread.Start();
         
-        serviceProvider.StartProviderService();
+        customLoggerService.LogMessage($"Token is {token.token}");
+        serviceProvider.StartProviderService(token);
 
         isConnectedOSC = true;
     }

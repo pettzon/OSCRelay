@@ -5,7 +5,7 @@ namespace OSCRelay.Services;
 
 public interface IOSCService
 {
-    public void ConnectToOSC(int receiverPort, int senderPort);
+    public void ConnectToOSC(int receiverPort, int senderPort, Token token);
     public void SendAvatarParameters(AvatarParameterDTO avatarParameter);
     private void ParseMessage(string? message) { }
 }

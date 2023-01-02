@@ -1,16 +1,18 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Global.Data.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OSCRelay.Services;
 using OSCRelay.Services.Implementations;
+using IServiceProvider = OSCRelay.Services.IServiceProvider;
 
 namespace OSCRelay
 {
     public partial class App : Application
     {
         public static IHost? AppHost { get; private set; }
-        
+
         public App()
         {
             AppHost = Host.CreateDefaultBuilder().ConfigureServices((hostContext, services) =>
@@ -44,6 +46,8 @@ namespace OSCRelay
 
         protected override async void OnExit(ExitEventArgs e)
         {
+            MainWindow startupForm = AppHost.Services.GetRequiredService<MainWindow>();
+            await startupForm.SaveSettings();
             await AppHost!.StopAsync();
             base.OnExit(e);
         }

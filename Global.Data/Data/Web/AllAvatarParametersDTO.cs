@@ -3,12 +3,12 @@
 [System.Serializable]
 public class AllAvatarParametersDTO
 {
-    public string avatarID { get; set; }
+    public string avatarName { get; set; }
     public List<AvatarParameterDTO> avatarParameters { get; set; }
 
-    public AllAvatarParametersDTO(string avatarID, List<AvatarParameterDTO> avatarParameters)
+    public AllAvatarParametersDTO(string avatarName, List<AvatarParameterDTO> avatarParameters)
     {
-        this.avatarID = avatarID;
+        this.avatarName = avatarName;
         this.avatarParameters = avatarParameters;
     }
 }

@@ -12,6 +12,7 @@ public interface ISettingsManagerService
     public UserSettings GetUserSettings();
     public ExposedParameters GetExposedAvatarParameters();
     public void SetUserSettings(UserSettings settings);
+    public Task SaveUserSettings();
     public void SetUserEnabledParameters(ExposedParameters exposedParameters);
     private async Task SaveUserSettingsAsync(UserSettings settings) {}
     private void OnAvatarParametersLoaded(VRCData vrcData) {}

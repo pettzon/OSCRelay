@@ -92,7 +92,7 @@ public partial class AvatarParametersWindow : Window
             parameterList.Add(parameter);
         }
 
-        ExposedParameters exposedParameters = new ExposedParameters(avatarInfoService.GetCurrentAvatarParameters()!.id!, parameterList);
+        ExposedParameters exposedParameters = new ExposedParameters(avatarInfoService.GetCurrentAvatarParameters()!.id!, avatarInfoService.GetCurrentAvatarParameters().name!, parameterList);
         settingsManagerService.SetUserEnabledParameters(exposedParameters);
     }
 }

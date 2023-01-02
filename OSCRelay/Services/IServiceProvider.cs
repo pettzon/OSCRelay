@@ -9,8 +9,8 @@ public interface IServiceProvider
 {
     public event Action<Token> OnConnected;
     public event Action<AvatarParameterDTO> OnReceiveParameter;
-    private void UpdateExposedAvatarParameters(ExposedParameters parameters) { }
+    public void UpdateExposedAvatarParameters(ExposedParameters parameters);
     private async Task UpdateExposedAvatarParametersAsync(ExposedParameters parameters) { }
-    public void StartProviderService();
+    public void StartProviderService(Token token);
     private async Task StartProviderServiceAsync() { }
 }

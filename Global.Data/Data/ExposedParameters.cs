@@ -6,11 +6,13 @@ namespace Global.Data.Data;
 public class ExposedParameters
 {
     public string avatarID { get; set; }
+    public string avatarName { get; set; }
     public List<AvatarParameter> avatarParameters { get; set; }
 
-    public ExposedParameters(string avatarID, List<AvatarParameter> avatarParameters)
+    public ExposedParameters(string avatarID, string avatarName, List<AvatarParameter> avatarParameters)
     {
         this.avatarID = avatarID;
+        this.avatarName = avatarName;
         this.avatarParameters = avatarParameters;
     }
 }
