@@ -12,6 +12,7 @@ public interface IServiceProvider
     public event Action<AvatarParameterDTO> OnReceiveParameter;
     public void UpdateExposedAvatarParameters(ExposedParameters parameters);
     private async Task UpdateExposedAvatarParametersAsync(ExposedParameters parameters) { }
-    public void StartProviderService(Token token, string host);
-    private async Task StartProviderServiceAsync(CancellationToken cancellationToken, Token token, string host) { }
+    public void StartProviderService(Token token, string tokenURI, string hostURI);
+    private async Task StartProviderServiceAsync(CancellationToken cancellationToken, Token token) { }
+    public Token GetAPIToken();
 }

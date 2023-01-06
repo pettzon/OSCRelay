@@ -17,7 +17,10 @@ public class SocketIOService : IServiceProvider
     private SocketIO client;
     private readonly ICustomLoggerService customLogger;
     private Token APItoken;
-    private string hostURI;
+    private string socketURI;
+    private string tokenURI;
+    
+    public Token GetAPIToken() => APItoken;
     
     private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
     private readonly CancellationToken cancellationToken;
@@ -38,15 +41,17 @@ public class SocketIOService : IServiceProvider
         // });
     }
 
-    public void StartProviderService(Token token, string host)
+    public void StartProviderService(Token token, string tokenURI, string socketURI)
     {
-        hostURI = host;
-        StartProviderServiceAsync(cancellationToken, token, host);
-    }
+        this.socketURI = socketURI;
+        this.tokenURI = tokenURI;
+        APItoken = token;
 
-    private async Task StartProviderServiceAsync(CancellationToken cancellationToken, Token token, string host)
+        StartProviderServiceAsync(cancellationToken);
+    }
+    private async Task StartProviderServiceAsync(CancellationToken cancellationToken)
     {
-        client = new SocketIO(host, new SocketIOOptions()
+        client = new SocketIO(socketURI, new SocketIOOptions()
         {
             EIO = EngineIO.V4,
             Transport = TransportProtocol.WebSocket,
@@ -56,7 +61,7 @@ public class SocketIOService : IServiceProvider
 
         RegisterClientEvents();
 
-        if (string.IsNullOrEmpty(token.token))
+        if (string.IsNullOrEmpty(APItoken.token))
         {
             customLogger.LogMessage("Fetching API token...");
             APItoken = await FetchAccessToken();
@@ -68,9 +73,8 @@ public class SocketIOService : IServiceProvider
             customLogger.LogMessage($"Could not connect to remote server!");
             cancellationTokenSource.Cancel();
         }
-        
-        await client.ConnectAsync();
 
+        await client.ConnectAsync();
         SettingsManagerService.OnExposedParametersChanged += UpdateExposedAvatarParameters;
     }
 
@@ -95,7 +99,7 @@ public class SocketIOService : IServiceProvider
     {
         using (HttpClient client = new HttpClient())
         {
-            HttpResponseMessage message = await client.GetAsync(new Uri($"{hostURI}/my-token/"));
+            HttpResponseMessage message = await client.GetAsync(tokenURI);
             message.EnsureSuccessStatusCode();
 
             string json = await message.Content.ReadAsStringAsync();
